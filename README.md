@@ -9,12 +9,11 @@ API สำหรับตรวจสอบ (verify) และกดรับ (r
 
 ## 📌 Endpoints
 
+```
 GET/POST /verify?voucher=<VOUCHER_ID_OR_LINK>&mobile=<MOBILE>
 GET/POST /redeem?voucher=<VOUCHER_ID_OR_LINK>&mobile=<MOBILE>
-GET/POST /flow ?voucher=<VOUCHER_ID_OR_LINK>&mobile=<MOBILE> # verify แล้ว redeem ต่อ
-
-markdown
-คัดลอกโค้ด
+GET/POST /flow  ?voucher=<VOUCHER_ID_OR_LINK>&mobile=<MOBILE>   # verify แล้ว redeem ต่อ
+```
 
 **พารามิเตอร์หลัก**
 - `voucher` : โค้ดตรง หรือทั้งลิงก์ `https://gift.truemoney.com/campaign/?v=...`
@@ -32,16 +31,19 @@ markdown
 ### Curl (GET)
 ```bash
 curl -s "https://api.kiddy.wtf/redeem?voucher=VOUCHER_ID&mobile=0812345678"
-Curl (POST JSON)
-bash
-คัดลอกโค้ด
-curl -s -X POST "https://api.kiddy.wtf/redeem" \
-  -H "Content-Type: application/json" \
-  -d '{"voucher":"VOUCHER_ID","mobile":"0812345678"}'
-🔧 วิธีการ Request (ตัวอย่างหลายภาษา)
-1) JavaScript (fetch)
-js
-คัดลอกโค้ด
+```
+
+### Curl (POST JSON)
+```bash
+curl -s -X POST "https://api.kiddy.wtf/redeem"   -H "Content-Type: application/json"   -d '{"voucher":"VOUCHER_ID","mobile":"0812345678"}'
+```
+
+---
+
+## 🔧 วิธีการ Request (ตัวอย่างหลายภาษา)
+
+### 1) JavaScript (fetch)
+```js
 // Redeem
 fetch("https://api.kiddy.wtf/redeem?voucher=VOUCHER_ID&mobile=0812345678")
   .then(res => res.json())
@@ -59,9 +61,10 @@ fetch("https://api.kiddy.wtf/verify", {
   .then(r => r.json())
   .then(console.log)
   .catch(console.error);
-2) PHP (cURL client)
-php
-คัดลอกโค้ด
+```
+
+### 2) PHP (cURL client)
+```php
 <?php
 // Redeem แบบ GET
 $url = "https://api.kiddy.wtf/redeem?voucher=VOUCHER_ID&mobile=0812345678";
@@ -85,26 +88,25 @@ curl_setopt_array($ch, [
 $res = curl_exec($ch);
 curl_close($ch);
 echo $res;
-3) Postman (แนวทาง)
-Method: GET หรือ POST
+```
 
-URL: https://api.kiddy.wtf/redeem (หรือ /verify, /flow)
+### 3) Postman (แนวทาง)
+- Method: `GET` หรือ `POST`
+- URL: `https://api.kiddy.wtf/redeem` (หรือ `/verify`, `/flow`)
+- Headers (ถ้ามี):  
+  - `Content-Type: application/json`  
+  - `Authorization: Bearer <YOUR_SERVER_KEY>`  
+- Body (raw, JSON):
+  ```json
+  { "voucher": "VOUCHER_ID", "mobile": "0812345678" }
+  ```
 
-Headers (ถ้ามี):
+---
 
-Content-Type: application/json
+## 📤 รูปแบบการตอบกลับ (Response)
 
-Authorization: Bearer <YOUR_SERVER_KEY>
-
-Body (raw, JSON):
-
-json
-คัดลอกโค้ด
-{ "voucher": "VOUCHER_ID", "mobile": "0812345678" }
-📤 รูปแบบการตอบกลับ (Response)
-สำเร็จ (Redeem)
-json
-คัดลอกโค้ด
+### สำเร็จ (Redeem)
+```json
 {
   "redeemResponse": {
     "status": { "message": "สำเร็จ", "code": "SUCCESS" },
@@ -126,30 +128,39 @@ json
     }
   }
 }
-ข้อผิดพลาดที่พบบ่อย
-json
-คัดลอกโค้ด
+```
+
+### ข้อผิดพลาดที่พบบ่อย
+```json
 { "redeemResponse": { "status": { "message": "curl error", "code": "CURL_ERROR" }, "data": null } }
-json
-คัดลอกโค้ด
+```
+
+```json
 {
   "status": { "message": "bad request", "code": "BAD_REQUEST" },
   "error": { "missing": { "mobile": "required", "voucher": "ok" } }
 }
-🛡️ แนวทางความปลอดภัย (แนะนำ)
-เปิดตรวจ Authorization: Bearer <SERVER_KEY> สำหรับทุกคำขอภายนอก
+```
 
-เปิด HTTPS เท่านั้น (แพลตฟอร์มเช่น Render/Railway จะมีให้อยู่แล้ว)
+---
 
-ตั้ง Rate Limit ที่หน้า Web Server/WAF เพิ่มเติม (เช่น Cloudflare Rules)
+## 🛡️ แนวทางความปลอดภัย (แนะนำ)
 
-ปิด error บน production และอย่าใส่ข้อมูลลับไว้ในซอร์ส
+- เปิดตรวจ `Authorization: Bearer <SERVER_KEY>` สำหรับทุกคำขอภายนอก
+- เปิด HTTPS เท่านั้น (แพลตฟอร์มเช่น Render/Railway จะมีให้อยู่แล้ว)
+- ตั้ง Rate Limit ที่หน้า Web Server/WAF เพิ่มเติม (เช่น Cloudflare Rules)
+- ปิด error บน production และอย่าใส่ข้อมูลลับไว้ในซอร์ส
 
-🆘 Troubleshooting
-CURL_ERROR : โฮสต์ปลายทางบล็อก outbound หรือ PHP ไม่มี cURL/OpenSSL → แนะนำรันบน Render/Railway/VPS
+---
 
-SSL handshake error : บังคับ TLS 1.2 ฝั่งเซิร์ฟเวอร์ (ผู้พัฒนา API จะตั้งค่าไว้ให้แล้ว)
+## 🆘 Troubleshooting
 
-404 : ตรวจว่า endpoint ถูกต้อง และโครง rewrite (ถ้ามี) ทำงานปกติ
+- `CURL_ERROR` : โฮสต์ปลายทางบล็อก outbound หรือ PHP ไม่มี cURL/OpenSSL → แนะนำรันบน Render/Railway/VPS
+- SSL handshake error : บังคับ TLS 1.2 ฝั่งเซิร์ฟเวอร์ (ผู้พัฒนา API จะตั้งค่าไว้ให้แล้ว)
+- 404 : ตรวจว่า endpoint ถูกต้อง และโครง rewrite (ถ้ามี) ทำงานปกติ
+- JSON parse error ฝั่ง client : ตรวจ `Content-Type: application/json` และรูปแบบ JSON
 
-JSON parse error ฝั่ง client : ตรวจ Content-Type: application/json และรูปแบบ JSON
+---
+
+## 👤 ผู้พัฒนา
+Kid – Ai (Kiddy)
