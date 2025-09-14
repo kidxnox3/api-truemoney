@@ -148,20 +148,51 @@ print("Flow:", res.json())
 {
   "redeemResponse": {
     "status": {
-      "message": "สำเร็จ",
+      "message": "success",
       "code": "SUCCESS"
     },
     "data": {
       "voucher": {
-        "voucher_id": "xxxxxxxxxxx",
+        "voucher_id": "429518470949487422",
         "amount_baht": "10.00",
-        "status": "redeemed"
+        "redeemed_amount_baht": "10.00",
+        "member": 1,
+        "status": "active",
+        "link": "0199489266a279c199b4f5822ca4620f35h",
+        "detail": "",
+        "expire_date": 1757945578215,
+        "type": "R",
+        "redeemed": 1,
+        "available": 0
       },
       "owner_profile": {
-        "full_name": "xxxxxxx ***"
-      }
+        "full_name": "สมชาย ผู้ส่ง"
+      },
+      "redeemer_profile": {
+        "mobile_number": "093xxxxxxx"
+      },
+      "my_ticket": {
+        "mobile": "093xxxxxxx",
+        "update_date": 1757859242273,
+        "amount_baht": "10.00",
+        "full_name": "สมหญิง ผู้รับ",
+        "profile_pic": null
+      },
+      "tickets": [
+        {
+          "mobile": "093-xxx-1882",
+          "update_date": 1757859242273,
+          "amount_baht": "10.00",
+          "full_name": "สมหญิง ผู้รับ",
+          "profile_pic": null
+        }
+      ]
     }
   }
 }
 ```
 
+---
+
+## 👤 Developer
+Kiddy
