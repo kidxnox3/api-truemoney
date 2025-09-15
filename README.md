@@ -22,7 +22,6 @@ GET/POST /flow  ?voucher=<VOUCHER_ID_OR_LINK>&mobile=<MOBILE>
 
 - `voucher` → โค้ดวอเชอร์ หรือทั้งลิงก์ เช่น `https://gift.truemoney.com/campaign/?v=XXXXXXXX`  
 - `mobile`  → เบอร์ TrueMoney Wallet ที่จะใช้รับเงิน  
-  - ถ้าไม่ส่ง → ระบบจะพยายามอ่านจากไฟล์ config (`data.json`) ฝั่งเซิร์ฟเวอร์  
 
 ---
 
